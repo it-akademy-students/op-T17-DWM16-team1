@@ -31,10 +31,11 @@ let User = mongoose.model('User', userSchema)
 app.post('/login', async (req: Request, res:Response) => {
   const { email, password } = req.body
   // Find the user in my collection
+  console.log(email)
   const user = await User.findOne({ email })
   console.log(user)
   if(!user) {
-    return res.json({ status: 'error', error: '401'})
+    return res.send(400)
   } 
   console.log(user.email)
   if(await bcrypt.compare(password, user.hashPassword)){
@@ -43,7 +44,7 @@ app.post('/login', async (req: Request, res:Response) => {
       id: user._id,
       email: user.email
     }, process.env.JWT_SECRET)
-    return res.json({ status: 'ok', data: token})
+    return res.json({ status: 'ok', data: user})
   }
   res.json({status: 'error', error:'401'})
 })
@@ -97,6 +98,7 @@ let PUBLIC_TOKEN = null;
 
 app.get('/create_link_token', async function (request, response) {
     // Get the client_user_id by searching for the current user
+
     const linkTokenParams: LinkTokenCreateRequest = {
         user: {
           // This should correspond to a unique id for the current user.
@@ -119,14 +121,15 @@ app.get('/create_link_token', async function (request, response) {
 import { TransactionsGetRequest } from 'plaid'
 const moment = require('moment');
 app.post('/plaid_token_exchange', async (req: Request, res: Response) => {
-  const { public_token } = req.body
   try{
+    const { public_token } = req.body
+    const { uid } = req.body
     const response = await client.itemPublicTokenExchange({ public_token})
     const access_token = response.data.access_token
 
     const accounts_response = await client.accountsGet({access_token})
-    console.log('-------- ACCOUNT RESPONSE ----------')
-    console.log(accounts_response.data)
+    // console.log('-------- ACCOUNT RESPONSE ----------')
+    // console.log(accounts_response.data)
     
     const startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
     const endDate = moment().format('YYYY-MM-DD');
@@ -140,20 +143,25 @@ app.post('/plaid_token_exchange', async (req: Request, res: Response) => {
       },
     };
     const identityResponse = await client.transactionsGet(configs)
-    console.log('--------- Identity Response --------')
-    console.log(identityResponse.data)
-    
-    const transactioneResponse = await client.accountsBalanceGet({access_token})
-    console.log('--------- Accounts Balance Response --------')
-    console.log(transactioneResponse.data)
+    User.findByIdAndUpdate(uid, {transaction: identityResponse.data.transactions}, (err, data) => {
+    });
+    // User.findOneAndUpdate(uid, update)
 
+    
+    const transactionResponse = await client.accountsBalanceGet({access_token})
   } catch(error){
-    console.log(error)
+    // console.log(error)
   }
-  
   // ACCESS_TOKEN = tokenResponse.data.access_token
   // const accResponse = await client.accountsGet({ access_token : ACCESS_TOKEN})
   // console.log(accResponse)
+})
+
+app.get('/transaction', async(req: Request, res: Response) => {
+  const email = '61b8308a3542cec52581f806'
+  const user = await User.findOne({ _id:email })
+  console.log(user)
+  res.json(user)
 })
 
 app.listen(port, () => {

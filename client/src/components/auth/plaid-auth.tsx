@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
 import { usePlaidLink } from 'react-plaid-link';
-
+import { useLocation } from 'react-router-dom';
 export const PlaidAuth = () => {
     const [publicToken, setPublicToken] = useState('')
+
+    const location = useLocation()
+    const {uid} = location.state
+    console.log(uid)
     const fetchLinkToken = async () => {
         const response = await fetch('http://localhost:9000/create_link_token')
         const { link_token } = await response.json()
@@ -22,7 +25,8 @@ export const PlaidAuth = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ public_token })
+                body: JSON.stringify({ public_token, uid}),
+                      
             })
         },
         []
@@ -47,7 +51,7 @@ export const PlaidAuth = () => {
     // ...
   };
 
-  const { open, ready, error } = usePlaidLink(config);
+  const { open } = usePlaidLink(config);
 
   return (
     <>

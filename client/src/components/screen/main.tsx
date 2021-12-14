@@ -4,9 +4,6 @@ import { Auth } from "../auth/signin-google"
 
 export const MainScreen = () => {
     return(
-        <div>
             <Login/>
-            {/* < SignInForm/> */}
-        </div>
     )
 }

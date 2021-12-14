@@ -27,8 +27,9 @@ export const Login = () => {
         let {email , password } = formValues
         axios.post('http://localhost:9000/login', {email, password})
         .then((result) => {if(result.data.status === 'ok'){
-            console.log('Got the token: ', result.data.data)
-            navigate('/plaid')
+            const uid = result.data.data._id
+            console.log(uid)
+            navigate('/plaid', {state: {uid}})
         }else{
             alert(result.data.error)
         }})

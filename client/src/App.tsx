@@ -3,6 +3,8 @@ import { MainScreen } from './components/screen/main';
 import { Test } from './components/screen/test'
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { PlaidAuth } from './components/auth/plaid-auth';
+import { SignInForm } from './components/auth/signin-form';
+import { Login } from './components/auth/login-form';
 function App() {
   
   return (
@@ -11,6 +13,8 @@ function App() {
         <Route path='/' element={ <MainScreen/> }/>
         <Route path='/plaid' element={ <PlaidAuth/> }/>
         <Route path='/test' element={ <Test/> }/>
+        <Route path='/register' element={ <SignInForm/> }/>
+        <Route path='/login' element={ <Login/> }/>
       </Routes>
     </BrowserRouter>
   );
