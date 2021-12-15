@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Container from '@mui/material/Container'
-import { createTheme, Typography } from '@mui/material';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import '../../App.css'
+import { Typography } from '@mui/material';
+import Box from '@mui/material/Box'
+import  Grid  from '@mui/material/Grid'
+import './auth.css'
+import '../../index.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom'
@@ -36,30 +36,32 @@ export const SignInForm = () => {
       };
 
     return(
-        <Container maxWidth='xl' sx={{height:'100vh', width:'1',display:'flex', alignItems:'center',m:'0'}}>
-        <Box sx={{width:'40%', height:'1' ,display:'flex', flexDirection:'column' ,alignItems:'center' ,bgcolor:'#0071ff'}}>
-        <Box sx={{width:'60%', height:'25%', display:'flex', alignItems:'center'}}>
-            <CreditCardIcon fontSize='large' sx={{color:'white'}}/>
-            <Typography variant='h4' color='white' pl={'30px'}> Manage Yourself</Typography>
-        </Box>
-        </Box>
-        <Box sx={{width:'60%', height:'1',display: 'flex' ,flexDirection:'column'}}>
-            <Box sx={{width:'65%', height:'10%', display:'flex', justifyContent:'center', alignItems:'center'}}>
-                <Typography variant='subtitle2' color='#90a4ae'>Have an account ? </Typography>
-                <Link to="/login" style={{ textDecoration: 'none'}}><Typography variant='subtitle2' color='blue' ml='10px'>Sign In</Typography></Link>
-            </Box>
-            <Box sx={{width:'65%', height:'20%', display:'flex', flexDirection:'column', justifyContent:'center', alignSelf:'center'}}>
-                <h1>Welcome To Manage</h1>
-                <p style={{ fontSize:'16px', color:'grey', margin:'0'}}>Let's get you all set up so you can verify your personal account and begin setting up your profile.</p>
-            </Box>
-            <form onSubmit={handleSubmit} style={{width:'65%', height:'50vh',display:'flex', flexDirection:'column', alignSelf:'center'}}>
-                <TextField sx={{width:'1', mt:'50px', mb:'30px'}}
-                id="outlined-basic" label="Email" type='text' name='email'variant="outlined" size="small" value={formValues.email} onChange={handleInputChange}/>
-                <TextField sx={{width:'1', borderColor:'blue'}} 
-                id="outlined-basic" label="Password" type='text' name='password'variant="outlined" size="small" value={formValues.password} onChange={handleInputChange}/>
-                <Button variant="contained" type="submit" color='primary' sx={{width:'1', mt:'20px'}}>Create an account</Button>
-            </form>
-        </Box>
-        </Container>
+        <Grid container sx={{ height: '100vh'}}>
+            <Grid item xs={false} sm={4} md={7} sx={{}}>
+                <Box width='1' height='100vh' sx={{bgcolor:'black'}}></Box>
+            </Grid>
+            <Grid item xs={12} sm={8} md={5}>
+                <Box height='1' sx={{ my:8, mx:4, display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent:'center'}}>
+                    <Box height='10%' sx={{display:'flex', flexDirection:'column', width:'1'}}> 
+                    <Typography variant='subtitle1' sx={{display:'flex', justifyContent:'flex-start', width:'1',color:'gray'}}>Already have an account?
+                        <Link to='/login' style={{textDecoration:'none'}}><Typography variant='subtitle1' sx={{color:'blue', ml:'5px'}}>Sign In</Typography></Link>
+                    </Typography>
+                    </Box>
+                    <Box height='20%' sx={{display:'flex', flexDirection:'column', alignSelf:'flex-start'}}>
+                    <Typography sx={{width:'1', fontWeight:'bold'}} variant='h4'> Welcome To Manage</Typography>
+                    <Typography sx={{width:'1', mt:4, color:'gray'}}> Let's get you all set up so you can verify, <br/> your personnal account and begin setting up your profile.</Typography>
+                    </Box>
+                    <Box height='70%' sx={{display:'flex', flexDirection:'column', alignSelf:'flex-start'}}>
+                    <form onSubmit={handleSubmit} >
+                        <TextField required size='medium' sx={{width:'1'}} helperText='Please enter your email'
+                        id="outlined-basic" label="Email" type='text' name='email'variant="outlined" value={formValues.email} onChange={handleInputChange}/>
+                        <TextField required sx={{width:'1', borderColor:'blue', my:3}} helperText='Please enter your password'
+                        id="outlined-basic" label="Password" type='password' name='password'variant="outlined" size="medium" value={formValues.password} onChange={handleInputChange}/>
+                        <Button variant="contained" type="submit" color='primary' sx={{width:'40%%', mt:'20px', bgcolor:'black'}}>Create an account</Button>
+                    </form>
+                    </Box>
+                </Box>
+            </Grid>
+         </Grid>
     )
 }
