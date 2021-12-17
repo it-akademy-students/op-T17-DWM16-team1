@@ -26,9 +26,11 @@ export const Login = () => {
             [name]: value,
         })
     }
+
     const handleSubmit = (event: any) => {
         event.preventDefault();
         let {email , password } = formValues
+        console.log(email, password)
         axios.post('http://localhost:9000/login', {email, password})
         .then((result) => {if(result.data.status === 'ok'){
             const uid = result.data.data._id

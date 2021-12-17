@@ -1,39 +1,25 @@
-import { useEffect } from 'react'
-import axios from 'axios'
-import { Auth } from '../auth/signin-google'
+import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 export const Test = () => {
-    // const token = window.localStorage.getItem('token')
     const location = useLocation()
-    let { myBody } = location.state
-    let { email, password } = myBody
-    console.log(email)
-    console.log(password)
-    useEffect(() =>{
-        // if(token){
-        //     fetchData(token)
-        // }
-        if(myBody){
-            register(email, password)
-        }
-    },[])
+    const {uid} = location.state
+    const [query, setQuery] = useState('react')
+    const [user, setUser] = useState()
 
-    // const fetchData = async(token : string) => {
-    //     const res = await axios.get('http://localhost:9000/api/display',{
-    //         headers: {
-    //             Authorization : 'Bearer ' + token,
-    //         }
-    //     })
-    //     console.log(res.data)
-    // }
-    const register = async(email: string, password: string) => {
-        const res = axios.post('http://localhost:9000/register', {email, password})
-        console.log(res)
+    const fetchData = async () => {
+        const result = await axios.post('http://localhost:9000/transactions', {uid
+    })
+        setUser(result.data)
     }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
     return(
         <div>
-            <Auth></Auth>
+            
         </div>
     )
 }

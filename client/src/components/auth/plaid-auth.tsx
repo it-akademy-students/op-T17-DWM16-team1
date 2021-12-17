@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { usePlaidLink } from 'react-plaid-link';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 export const PlaidAuth = () => {
     const [publicToken, setPublicToken] = useState('')
+    const [nextStep, setNextStep] = useState('')
+    const [nextStepMatch, setNextStepMatch] = useState('')
 
     const location = useLocation()
     const {uid} = location.state
@@ -19,7 +21,9 @@ export const PlaidAuth = () => {
 
     const onSuccess = useCallback(
         (public_token, metadata) => {
-            console.log('onSuccess', public_token, metadata)
+          setNextStep(public_token)
+          setNextStepMatch(public_token)
+          console.log('onSuccess', public_token, metadata)
             fetch('http://localhost:9000/plaid_token_exchange',{
                 method: 'POST',
                 headers: {
@@ -52,16 +56,16 @@ export const PlaidAuth = () => {
   };
 
   const { open } = usePlaidLink(config);
+  const navigate = useNavigate()
   open()
+  const nextStepFunction = async() =>{
+    if(nextStep){
+      navigate('/test', {state: { uid }})
+    }
+  }
   return (
     <>
-      <button
-        type="button"
-        className="button"
-        onClick={() => open()}
-      >
-        Open Plaid Link
-      </button>
+    <button onClick={nextStepFunction}></button>
     </>
   );
 };
