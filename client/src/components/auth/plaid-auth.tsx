@@ -52,7 +52,7 @@ export const PlaidAuth = () => {
   };
 
   const { open } = usePlaidLink(config);
-
+  open()
   return (
     <>
       <button

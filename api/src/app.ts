@@ -33,7 +33,7 @@ app.post('/login', async (req: Request, res:Response) => {
   // Find the user in my collection
   console.log(email)
   const user = await User.findOne({ email })
-  console.log(user)
+  // console.log(user)
   if(!user) {
     return res.send(400)
   } 
@@ -145,6 +145,7 @@ app.post('/plaid_token_exchange', async (req: Request, res: Response) => {
     const identityResponse = await client.transactionsGet(configs)
     User.findByIdAndUpdate(uid, {transaction: identityResponse.data.transactions}, (err, data) => {
     });
+    console.log(identityResponse)
     // User.findOneAndUpdate(uid, update)
 
     
