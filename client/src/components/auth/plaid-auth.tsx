@@ -1,14 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { usePlaidLink } from 'react-plaid-link';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 export const PlaidAuth = () => {
     const [publicToken, setPublicToken] = useState('')
     const [nextStep, setNextStep] = useState('')
-    const [nextStepMatch, setNextStepMatch] = useState('')
-
-    const location = useLocation()
-    const {uid} = location.state
+    const uid = window.localStorage.getItem('uid')
     console.log(uid)
+
     const fetchLinkToken = async () => {
         const response = await fetch('http://localhost:9000/create_link_token')
         const { link_token } = await response.json()
@@ -22,7 +20,6 @@ export const PlaidAuth = () => {
     const onSuccess = useCallback(
         (public_token, metadata) => {
           setNextStep(public_token)
-          setNextStepMatch(public_token)
           console.log('onSuccess', public_token, metadata)
             fetch('http://localhost:9000/plaid_token_exchange',{
                 method: 'POST',
@@ -33,6 +30,7 @@ export const PlaidAuth = () => {
                       
             })
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
 
@@ -60,7 +58,7 @@ export const PlaidAuth = () => {
   open()
   const nextStepFunction = async() =>{
     if(nextStep){
-      navigate('/test', {state: { uid }})
+      navigate('/test')
     }
   }
   return (

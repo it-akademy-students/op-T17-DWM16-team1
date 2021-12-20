@@ -5,14 +5,14 @@ const User = require('../models/user_model')
 
 class Transaction {
   name: string;
-  category: [];
+  category: string;
   date: string;
   currency: string;
   amount: number;
 
-  constructor(name: string, category: [string], date: string, currency: string, amount: number ){
+  constructor(name: string, category: string, date: string, currency: string, amount: number ){
     this.name = name
-    this.category = []
+    this.category = category
     this.date = date
     this.currency = currency
     this.amount = amount
@@ -31,13 +31,14 @@ router.post('/', async(req: Request, res: Response) => {
     const user_transactions = transaction.map(item => {
       const user_transaction = new Transaction(
         item.name,
-        item.category,
+        item.category[0],
         item.date,
         item.iso_currency_code,
         item.amount,
         )
       return user_transaction
-    }) 
+    })
+    console.log(user_transactions)
     res.json(user_transactions)
   })
 

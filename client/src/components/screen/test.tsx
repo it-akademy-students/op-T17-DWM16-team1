@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 export const Test = () => {
-    const location = useLocation()
-    const {uid} = location.state
+    const uid = window.localStorage.getItem('uid')
+    console.log(uid)
     const [user, setUser] = useState<any>()
 
     const fetchData = async () => {
@@ -15,17 +14,18 @@ export const Test = () => {
 
     useEffect(() => {
         fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     console.log(user)
     if(user){
         return(
             <div>
                 {user.map((item: { name: string, date: string, amount:number, category: [string] }, index: number) => 
-                <div>
-                <p key={index}>{item.date}</p>
-                <p key={index}>{item.name}</p>
-                <p key={index}>{item.amount}</p>
-                <p key={index}>{item.category[0]}</p>
+                <div key={index}>
+                <p>{item.date}</p>
+                <p>{item.name}</p>
+                <p>{item.amount}</p>
+                <p>{item.category}</p>
                 </div>
                 )}
             </div>

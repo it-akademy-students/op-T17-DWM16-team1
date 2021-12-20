@@ -34,8 +34,8 @@ export const Login = () => {
         axios.post('http://localhost:9000/login', {email, password})
         .then((result) => {if(result.data.status === 'ok'){
             const uid = result.data.data._id
-            console.log(uid)
-            navigate('/plaid', {state: {uid}})
+            window.localStorage.setItem('uid', uid)
+            navigate('/plaid')
         }else{
             alert(result.data.error)
         }})

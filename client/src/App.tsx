@@ -1,5 +1,6 @@
 import './App.css';
 import { MainScreen } from './components/screen/main';
+import { Landing } from './components/screen/landing';
 import { Test } from './components/screen/test'
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { PlaidAuth } from './components/auth/plaid-auth';
@@ -15,6 +16,7 @@ function App() {
         <Route path='/test' element={ <Test/> }/>
         <Route path='/register' element={ <SignInForm/> }/>
         <Route path='/login' element={ <Login/> }/>
+        <Route path='/landing' element= { <Landing/>}/>
       </Routes>
     </BrowserRouter>
   );
