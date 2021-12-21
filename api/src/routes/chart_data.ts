@@ -8,6 +8,7 @@ router.use(function (req, res, next) {
   console.log('Time:', Date.now());
   next();
 });
+
 class Data {
   name: string;
   category: string;
@@ -19,6 +20,7 @@ class Data {
     this.amount = number
   }
 }
+
 class ChartObject {
   household: [number];
   food: [number];
@@ -30,6 +32,7 @@ class ChartObject {
     this.other = other
   }
 }
+
 router.post('/', async(req: Request, res: Response) => {
     const {uid} = req.body
     const user = await User.findOne({ _id:uid })
